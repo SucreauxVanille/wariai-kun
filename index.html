@@ -3,14 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <title>割合君</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    #message {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    #question {
+      font-size: 1.5em;
+      margin: 20px 0;
+    }
+    #answer {
+      font-size: 1.5em;
+      padding: 10px;
+      width: 60%;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    button {
+      font-size: 1.2em;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 8px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+    }
+    button:hover {
+      background-color: #45a049;
+      cursor: pointer;
+    }
+    #result {
+      font-size: 1.3em;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
   <h1>割合君</h1>
+  <p id="message">計算用紙を用意してやってみよう！</p>
   <p id="question"></p>
   <input type="number" id="answer" placeholder="答えを入力">
+  <br>
   <button onclick="checkAnswer()">答える</button>
-  <p id="result"></p>
   <button onclick="newQuestion()">次の問題</button>
+  <p id="result"></p>
 
   <script>
     let correctAnswer;
@@ -19,25 +66,24 @@
       document.getElementById("result").textContent = "";
       document.getElementById("answer").value = "";
 
-      // 出題パターンをランダム選択
       const pattern = Math.floor(Math.random() * 3);
       let A, B, C, question;
 
       switch(pattern) {
-        case 0: // AのB割はいくつ？
-          A = Math.floor(Math.random() * 90) + 10; // 10～99
-          B = Math.floor(Math.random() * 9) + 1;   // 1～9
+        case 0:
+          A = Math.floor(Math.random() * 90) + 10;
+          B = Math.floor(Math.random() * 9) + 1;
           correctAnswer = A * B / 10;
           question = `${A}の${B}割はいくつ？`;
           break;
-        case 1: // CはAの何割？
+        case 1:
           A = Math.floor(Math.random() * 90) + 10;
-          let rate = Math.floor(Math.random() * 9) + 1; // 1～9割
+          let rate = Math.floor(Math.random() * 9) + 1;
           C = A * rate / 10;
           correctAnswer = rate;
           question = `${C}は${A}の何割？`;
           break;
-        case 2: // Cは何のB割？
+        case 2:
           B = Math.floor(Math.random() * 9) + 1;
           let base = Math.floor(Math.random() * 90) + 10;
           C = base * B / 10;
@@ -55,10 +101,18 @@
 
       if (userAnswer === correctAnswer) {
         result.textContent = "正解！🎉";
+        result.style.color = "green";
       } else {
         result.textContent = `残念！正解は ${correctAnswer} です。`;
+        result.style.color = "red";
       }
     }
+
+    newQuestion();
+  </script>
+</body>
+</html>
+
 
     // 初回ロード時に問題生成
     newQuestion();
