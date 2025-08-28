@@ -16,8 +16,13 @@
     }
     #message {
       font-size: 1.2em;
-      margin-bottom: 20px;
+      margin-bottom: 5px;
       color: #333;
+    }
+    #note {
+      font-size: 1em;
+      margin-bottom: 20px;
+      color: #666;
     }
     #question {
       font-size: 1.5em;
@@ -47,48 +52,61 @@
       font-size: 1.3em;
       margin-top: 20px;
     }
+    #streak {
+      font-size: 1.3em;
+      margin-top: 15px;
+      color: #0066cc;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
   <h1>割合君</h1>
   <p id="message">計算用紙を用意してやってみよう！</p>
+  <p id="note">※答えは数字だけ入力してね！</p>
   <p id="question"></p>
   <input type="number" id="answer" placeholder="答えを入力">
   <br>
   <button onclick="checkAnswer()">答える</button>
   <button onclick="newQuestion()">次の問題</button>
   <p id="result"></p>
+  <p id="streak"></p>
 
   <script>
     let correctAnswer;
+    let currentUnit;
+    let streakCount = 0;
 
     function newQuestion() {
       document.getElementById("result").textContent = "";
       document.getElementById("answer").value = "";
 
       const pattern = Math.floor(Math.random() * 3);
+      const units = ["kg", "cm", "mL"];
+      currentUnit = units[Math.floor(Math.random() * units.length)];
+
       let A, B, C, question;
 
       switch(pattern) {
-        case 0:
+        case 0: // AのB割はいくつ？
           A = Math.floor(Math.random() * 90) + 10;
           B = Math.floor(Math.random() * 9) + 1;
           correctAnswer = A * B / 10;
-          question = `${A}の${B}割はいくつ？`;
+          question = `${A}${currentUnit}の${B}割は何${currentUnit}？`;
           break;
-        case 1:
+        case 1: // CはAの何割？
           A = Math.floor(Math.random() * 90) + 10;
           let rate = Math.floor(Math.random() * 9) + 1;
           C = A * rate / 10;
           correctAnswer = rate;
-          question = `${C}は${A}の何割？`;
+          question = `${C}${currentUnit}は${A}${currentUnit}の何割？`;
           break;
-        case 2:
+        case 2: // Cは何のB割？
           B = Math.floor(Math.random() * 9) + 1;
           let base = Math.floor(Math.random() * 90) + 10;
           C = base * B / 10;
           correctAnswer = base;
-          question = `${C}は何の${B}割？`;
+          question = `${C}${currentUnit}は何${currentUnit}の${B}割？`;
           break;
       }
 
@@ -98,13 +116,22 @@
     function checkAnswer() {
       const userAnswer = Number(document.getElementById("answer").value);
       const result = document.getElementById("result");
+      const streakDisplay = document.getElementById("streak");
 
       if (userAnswer === correctAnswer) {
         result.textContent = "正解！🎉";
         result.style.color = "green";
+        streakCount++;
+        if (streakCount >= 2) {
+          streakDisplay.textContent = `${streakCount}問連続正解！すごい！`;
+        } else {
+          streakDisplay.textContent = "";
+        }
       } else {
-        result.textContent = `残念！正解は ${correctAnswer} です。`;
+        result.textContent = `残念！正解は ${correctAnswer}${currentUnit} です。`;
         result.style.color = "red";
+        streakCount = 0;
+        streakDisplay.textContent = "";
       }
     }
 
