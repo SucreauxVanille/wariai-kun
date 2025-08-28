@@ -58,6 +58,23 @@
       color: #0066cc;
       font-weight: bold;
     }
+    /* カエルボタン */
+    #kaeru-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 100px;
+      height: 100px;
+      cursor: pointer;
+      animation: sway 3s ease-in-out infinite;
+    }
+    @keyframes sway {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(5deg); }
+      50% { transform: rotate(0deg); }
+      75% { transform: rotate(-5deg); }
+      100% { transform: rotate(0deg); }
+    }
   </style>
 </head>
 <body>
@@ -68,9 +85,11 @@
   <input type="number" id="answer" placeholder="答えを入力">
   <br>
   <button onclick="checkAnswer()">答える</button>
-  <button onclick="newQuestion()">次の問題</button>
   <p id="result"></p>
   <p id="streak"></p>
+
+  <!-- カエルボタン -->
+  <img id="kaeru-btn" src="nextkaeru.png" alt="次へ" onclick="newQuestion()">
 
   <script>
     let correctAnswer;
